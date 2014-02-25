@@ -1,0 +1,68 @@
+# Poller sample configuration file
+
+# This variable specifies the finder's
+# file with founded zones
+# This file is input to the poller application
+#zones_file = /usr/local/share/finder/zones.stable
+zones_file = /usr/local/share/finder/zones_tmp.txt
+#zones_file = /mnt/raid6/zonecop/zones.stable
+#zones_file = /tmp/first1k.txt    success
+#zones_file = /tmp/second1k.txt 
+#zones_file = /tmp/third1k.txt    success
+#zones_file = /tmp/fourth1k.txt   success
+
+# This variable specifies the output
+# file with complete analysis of zones
+#out_file = /usr/local/share/poller/zones.txt
+out_file = /usr/local/share/poller/analyzed_zones.txt
+
+# This variable specifies where the default log
+# file should be.  This can be overridden on
+# the command line, or excluded for no logging
+#log_file = /var/log/poller.log
+log_file = /usr/local/share/poller/poller.log
+
+# This variable specifies the default log level
+# This can be overridden on the command line, and
+# the default (if not specified) is CRITICAL.
+# The levels are:
+#   DEBUG
+#   INFO
+#   WARNING
+#   ERROR
+#   CRITICAL
+log_level = DEBUG
+
+# This variable tells software where to store
+# its PID, and is optional.
+pid_file = /tmp/poller.pid
+
+# This variable specifies the number of 
+# workers in thread pool
+workers_number = 1
+
+# This varilable specifies the default number
+# of zones to crawl per each worker in thread pool
+# Type: integer
+zones_per_worker = 10
+
+# This varilable specifies the default queue size
+# Type: integer
+event_queue_max = 100000
+
+# This varilable specifies the default recursive nameserver
+# All queries would be sent to this IP address
+# Type: IPv4 address
+nameserver = 129.82.138.48
+
+# This variable set the timeout 
+# for queries to recursive resolver
+# Type: seconds
+nameserver_timeout = 3
+
+# This variable set the retry value 
+# for queries to recursive resolver
+# Type: integer
+nameserver_retry = 3
+
+

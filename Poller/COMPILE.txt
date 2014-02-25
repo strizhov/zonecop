@@ -1,0 +1,1 @@
+g++ -L/usr/local/lib -lvdns -I/usr/local/include -lpthread *.cc -o main

@@ -1,0 +1,55 @@
+# Finder sample configuration file
+
+# This variable specifies the output
+# file with founded zones
+#out_file = /usr/local/share/finder/zones.txt
+out_file = /mnt/raid6/zonecop/zones.work
+
+# This variable specifies where the default log
+# file should be.  This can be overridden on
+# the command line, or excluded for no logging
+#log_file = /var/log/finder.log
+log_file = /mnt/raid6/zonecop/finder.log
+
+# This variable specifies the default log level
+# This can be overridden on the command line, and
+# the default (if not specified) is CRITICAL.
+# The levels are:
+#   DEBUG
+#   INFO
+#   WARNING
+#   ERROR
+#   CRITICAL
+log_level = INFO
+
+# This variable tells software where to store
+# its PID, and is optional.
+pid_file = /mnt/raid6/zonecop/finder.pid
+
+# This variable specifies the number of 
+# workers in thread pool
+workers_number = 100
+
+# This varilable specifies the default number
+# of zones to crawl per each worker in thread pool
+zones_per_worker = 20
+
+# This varilable specifies the default queue size
+event_queue_max = 100000
+
+# This varilable specifies the default recursive nameserver
+# All queries would be sent to this IP address
+# Type: IPv4 address
+nameserver = 129.82.138.48
+
+# This variable set the timeout
+# for queries to recursive resolver
+# Type: seconds
+nameserver_timeout = 3
+
+# This variable set the retry value
+# for queries to recursive resolver
+# Type: integer
+nameserver_retry = 3
+
+

@@ -1,0 +1,29 @@
+CXX =    g++
+DEFINES = -Wall -Werror -DHAVE_CONFIG_H
+CXXFLAGS =  -g -O2 
+CPPFLAGS = -I/usr/local/include
+LDFLAGS = -L/usr/local/lib
+LIBS = -lvdns  -lpthread
+
+prefix = /usr/local
+exec_prefix = ${prefix}
+libdir = ${exec_prefix}/lib
+
+OBJS = CrawlTask.o Event.o Event_mgr.o Event_queue.o FileWriter.o NsIP.o ReverseDNS.o ZoneReader.o \
+       ps_config.o ps_logger.o ps_mutex.o ps_mutex_hdlr.o ps_queue.o ps_rw_mutex.o \
+       ps_task.o ps_thrd.o ps_thrd_pool.o
+
+PROG = poller  
+
+.cc.o:
+	$(CXX) $(CXXFLAGS) $(DEFINES) $(CPPFLAGS) -c $<
+
+
+all: $(PROG)
+
+$(PROG): $(OBJS) 
+	$(CXX) $(CXXFLAGS) $(DEFINES) $(CPPFLAGS) $(LDFLAGS) -o $@ $@.cc $(OBJS) $(LIBS)
+
+clean:
+	rm -f $(PROG) $(OBJS)  
+

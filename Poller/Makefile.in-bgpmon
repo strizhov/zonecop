@@ -1,0 +1,207 @@
+EXEC      = bgpmon
+CC = @CC@
+CFLAGS = -Wall -fno-strict-aliasing @CFLAGS@ @CPPFLAGS@ @DEFS@
+LDFLAGS = @LDFLAGS@ @LIBS@
+
+
+AR = @AR@
+ARFLAGS = @ARFLAGS@
+RANLIB = @RANLIB@
+
+INSTALL = @INSTALL@
+INSTALL_PROGRAM = @INSTALL_PROGRAM@
+INSTALL_MODE= -m 0755
+
+# Include some boilerplate Gnu makefile definitions.
+prefix = @prefix@
+
+exec_prefix = @exec_prefix@
+bindir = @bindir@
+libdir = @libdir@
+infodir = @infodir@
+includedir = @includedir@
+datadir = @datadir@
+docdir = $(datadir)/doc/bgpmon
+localedir = $(datadir)/locale
+
+mandir = @mandir@
+manpfx = man
+
+man1ext = .1
+man1dir = $(mandir)/$(manpfx)1
+man3ext = .3
+man3dir = $(mandir)/$(manpfx)3
+
+htmldir = @htmldir@
+
+ 
+
+
+OBJECTDIR = ./Obj
+MAINOBJS  = $(OBJECTDIR)/main.o    $(OBJECTDIR)/bgpmon_formats.o 
+UTILOBJS  = $(OBJECTDIR)/log.o $(OBJECTDIR)/signals.o $(OBJECTDIR)/unp.o $(OBJECTDIR)/acl.o $(OBJECTDIR)/utils.o $(OBJECTDIR)/XMLUtils.o $(OBJECTDIR)/address.o
+QUEUEOBJS = $(OBJECTDIR)/queue.o $(OBJECTDIR)/pacing.o 
+LOGINOBJS    = $(OBJECTDIR)/login.o $(OBJECTDIR)/commandprompt.o $(OBJECTDIR)/commands.o $(OBJECTDIR)/acl_commands.o $(OBJECTDIR)/chain_commands.o $(OBJECTDIR)/client_commands.o $(OBJECTDIR)/login_commands.o $(OBJECTDIR)/periodic_commands.o $(OBJECTDIR)/peer_commands.o $(OBJECTDIR)/queue_commands.o $(OBJECTDIR)/mrt_commands.o
+CONFIGOBJS   = $(OBJECTDIR)/configfile.o 
+CHAINSOBJS   = $(OBJECTDIR)/chains.o $(OBJECTDIR)/chaininstance.o 
+CLIENTSOBJS  = $(OBJECTDIR)/clientscontrol.o $(OBJECTDIR)/clientinstance.o 
+LABELOBJS    = $(OBJECTDIR)/label.o $(OBJECTDIR)/myhash.o $(OBJECTDIR)/labelutils.o $(OBJECTDIR)/rtable.o 
+PEEROBJS     = $(OBJECTDIR)/bgpfsm.o $(OBJECTDIR)/peersession.o $(OBJECTDIR)/bgppacket.o $(OBJECTDIR)/peers.o $(OBJECTDIR)/peergroup.o
+PERIODICOBJS = $(OBJECTDIR)/periodic.o
+XMLOBJS      = $(OBJECTDIR)/xmlinternal.o $(OBJECTDIR)/xml.o $(OBJECTDIR)/xmldata.o 
+MRTOBJS  = $(OBJECTDIR)/mrtcontrol.o $(OBJECTDIR)/mrtinstance.o 
+
+OBJECTS1 = $(MAINOBJS)  $(UTILOBJS) $(QUEUEOBJS) $(LOGINOBJS) $(CONFIGOBJS) $(CLIENTSOBJS) $(MRTOBJS) $(CHAINSOBJS) $(XMLOBJS) $(PEEROBJS) $(LABELOBJS) $(PERIODICOBJS)
+
+all: $(EXEC)
+
+$(EXEC): $(OBJECTS1) 
+	$(CC) $(CFLAGS) $(OBJECTS1) $(LDFLAGS) -o $(EXEC)
+
+$(OBJECTDIR)/main.o: main.c
+	$(CC) $(CFLAGS) -c main.c -o $(OBJECTDIR)/main.o
+
+$(OBJECTDIR)/convert.o: Tools/convert.c
+	$(CC) $(CFLAGS) -c Tools/convert.c -o $(OBJECTDIR)/convert.o
+
+$(OBJECTDIR)/log.o: Util/log.c
+	$(CC) $(CFLAGS) -c Util/log.c -o $(OBJECTDIR)/log.o
+	
+$(OBJECTDIR)/signals.o: Util/signals.c
+	$(CC) $(CFLAGS) -c Util/signals.c -o $(OBJECTDIR)/signals.o
+
+$(OBJECTDIR)/unp.o: Util/unp.c
+	$(CC) $(CFLAGS) -c Util/unp.c -o $(OBJECTDIR)/unp.o
+
+$(OBJECTDIR)/acl.o: Util/acl.c
+	$(CC) $(CFLAGS) -c Util/acl.c -o $(OBJECTDIR)/acl.o 
+
+$(OBJECTDIR)/utils.o: Util/utils.c
+	$(CC) $(CFLAGS) -c Util/utils.c -o $(OBJECTDIR)/utils.o 
+
+$(OBJECTDIR)/queue.o: Queues/queue.c
+	$(CC) $(CFLAGS) -c Queues/queue.c -o $(OBJECTDIR)/queue.o
+
+$(OBJECTDIR)/pacing.o: Queues/pacing.c
+	$(CC) $(CFLAGS) -c Queues/pacing.c -o $(OBJECTDIR)/pacing.o
+
+$(OBJECTDIR)/XMLUtils.o: Config/XMLUtils.c
+	$(CC) $(CFLAGS) -c Config/XMLUtils.c -o $(OBJECTDIR)/XMLUtils.o
+
+$(OBJECTDIR)/clientscontrol.o: Clients/clientscontrol.c
+	$(CC) $(CFLAGS) -c Clients/clientscontrol.c -o $(OBJECTDIR)/clientscontrol.o
+
+$(OBJECTDIR)/clientinstance.o: Clients/clientinstance.c
+	$(CC) $(CFLAGS) -c Clients/clientinstance.c -o $(OBJECTDIR)/clientinstance.o
+
+$(OBJECTDIR)/mrtcontrol.o: Mrt/mrtcontrol.c
+	$(CC) $(CFLAGS) -c Mrt/mrtcontrol.c -o $(OBJECTDIR)/mrtcontrol.o
+
+$(OBJECTDIR)/mrtinstance.o: Mrt/mrtinstance.c
+	$(CC) $(CFLAGS) -c Mrt/mrtinstance.c -o $(OBJECTDIR)/mrtinstance.o
+	
+$(OBJECTDIR)/chains.o: Chains/chains.c
+	$(CC) $(CFLAGS) -c Chains/chains.c -o $(OBJECTDIR)/chains.o	
+	
+$(OBJECTDIR)/chaininstance.o: Chains/chaininstance.c
+	$(CC) $(CFLAGS) -c Chains/chaininstance.c -o $(OBJECTDIR)/chaininstance.o
+
+$(OBJECTDIR)/periodic.o: PeriodicEvents/periodic.c
+	$(CC) $(CFLAGS) -c PeriodicEvents/periodic.c -o $(OBJECTDIR)/periodic.o
+	
+$(OBJECTDIR)/login.o: Login/login.c
+	$(CC) $(CFLAGS) -c Login/login.c -o $(OBJECTDIR)/login.o
+
+$(OBJECTDIR)/commandprompt.o: Login/commandprompt.c
+	$(CC) $(CFLAGS) -c Login/commandprompt.c -o $(OBJECTDIR)/commandprompt.o
+	
+$(OBJECTDIR)/commands.o: Login/commands.c 
+	$(CC) $(CFLAGS) -c Login/commands.c -o $(OBJECTDIR)/commands.o
+
+$(OBJECTDIR)/acl_commands.o: Login/acl_commands.c 
+	$(CC) $(CFLAGS) -c Login/acl_commands.c -o $(OBJECTDIR)/acl_commands.o
+	
+$(OBJECTDIR)/client_commands.o: Login/client_commands.c 
+	$(CC) $(CFLAGS) -c Login/client_commands.c -o $(OBJECTDIR)/client_commands.o
+
+$(OBJECTDIR)/login_commands.o: Login/login_commands.c 
+	$(CC) $(CFLAGS) -c Login/login_commands.c -o $(OBJECTDIR)/login_commands.o
+
+$(OBJECTDIR)/chain_commands.o: Login/chain_commands.c 
+	$(CC) $(CFLAGS) -c Login/chain_commands.c -o $(OBJECTDIR)/chain_commands.o
+
+$(OBJECTDIR)/periodic_commands.o: Login/periodic_commands.c 
+	$(CC) $(CFLAGS) -c Login/periodic_commands.c -o $(OBJECTDIR)/periodic_commands.o
+
+$(OBJECTDIR)/peer_commands.o: Login/peer_commands.c 
+	$(CC) $(CFLAGS) -c Login/peer_commands.c -o $(OBJECTDIR)/peer_commands.o
+
+$(OBJECTDIR)/queue_commands.o: Login/queue_commands.c 
+	$(CC) $(CFLAGS) -c Login/queue_commands.c -o $(OBJECTDIR)/queue_commands.o
+
+$(OBJECTDIR)/mrt_commands.o: Login/mrt_commands.c 
+	$(CC) $(CFLAGS) -c Login/mrt_commands.c -o $(OBJECTDIR)/mrt_commands.o
+
+$(OBJECTDIR)/configfile.o: Config/configfile.c
+	$(CC) $(CFLAGS) -c Config/configfile.c -o $(OBJECTDIR)/configfile.o
+
+$(OBJECTDIR)/label.o: Labeling/label.c
+	$(CC) $(CFLAGS) -c Labeling/label.c -o $(OBJECTDIR)/label.o
+
+$(OBJECTDIR)/rtable.o: Labeling/rtable.c
+	$(CC) $(CFLAGS) -c Labeling/rtable.c -o $(OBJECTDIR)/rtable.o
+
+$(OBJECTDIR)/ltable.o: Labeling/ltable.c
+	$(CC) $(CFLAGS) -c Labeling/ltable.c -o $(OBJECTDIR)/ltable.o
+
+$(OBJECTDIR)/myhash.o: Labeling/myhash.c
+	$(CC) $(CFLAGS) -c Labeling/myhash.c -o $(OBJECTDIR)/myhash.o	
+
+$(OBJECTDIR)/labelutils.o: Labeling/labelutils.c
+	$(CC) $(CFLAGS) -c Labeling/labelutils.c -o $(OBJECTDIR)/labelutils.o	
+
+$(OBJECTDIR)/bgpfsm.o: Peering/bgpfsm.c
+	$(CC) $(CFLAGS) -c Peering/bgpfsm.c -o $(OBJECTDIR)/bgpfsm.o
+
+$(OBJECTDIR)/peersession.o: Peering/peersession.c
+	$(CC) $(CFLAGS) -c Peering/peersession.c -o $(OBJECTDIR)/peersession.o
+	
+$(OBJECTDIR)/bgppacket.o: Peering/bgppacket.c
+	$(CC) $(CFLAGS) -c Peering/bgppacket.c -o $(OBJECTDIR)/bgppacket.o
+
+$(OBJECTDIR)/peers.o: Peering/peers.c
+	$(CC) $(CFLAGS) -c Peering/peers.c -o $(OBJECTDIR)/peers.o
+
+$(OBJECTDIR)/peergroup.o: Peering/peergroup.c
+	$(CC) $(CFLAGS) -c Peering/peergroup.c -o $(OBJECTDIR)/peergroup.o	
+
+$(OBJECTDIR)/xmlinternal.o: XML/xmlinternal.c
+	$(CC) $(CFLAGS) -c XML/xmlinternal.c -o $(OBJECTDIR)/xmlinternal.o	
+
+$(OBJECTDIR)/xml.o: XML/xml.c
+	$(CC) $(CFLAGS) -c XML/xml.c -o $(OBJECTDIR)/xml.o	
+
+$(OBJECTDIR)/xmldata.o: XML/xmldata.c
+	$(CC) $(CFLAGS) -c XML/xmldata.c -o $(OBJECTDIR)/xmldata.o	
+
+$(OBJECTDIR)/bgpmon_formats.o: Util/bgpmon_formats.c
+	$(CC) $(CFLAGS) -c Util/bgpmon_formats.c -o $(OBJECTDIR)/bgpmon_formats.o
+
+$(OBJECTDIR)/address.o: Util/address.c
+	$(CC) $(CFLAGS) -c Util/address.c -o $(OBJECTDIR)/address.o
+
+clean:
+	rm -f $(EXEC) $(OBJECTS1)  	
+
+install:
+
+	-( mkdir -p $(bindir) )
+	$(INSTALL_PROGRAM) $(INSTALL_MODE) $(EXEC) $(bindir)/$(EXEC)
+	-( mkdir -p $(docdir) )
+	$(INSTALL_PROGRAM) README $(docdir)/README
+	-( mkdir -p /usr/local/etc)
+	$(INSTALL_PROGRAM) -m 644 bgpmon_config.txt  /usr/local/etc/bgpmon_config.txt;
+
+
+
+

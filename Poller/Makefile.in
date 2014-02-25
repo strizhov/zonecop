@@ -1,0 +1,65 @@
+
+PROG = poller
+
+CC =    @CC@
+CFLAGS = @CFLAGS@ 
+#CFLAGS += -Wall -Werror 
+
+CXX =    @CXX@
+LDFLAGS = @LDFLAGS@ @LIBS@
+CXXFLAGS = @CXXFLAGS@ 
+
+CPPFLAGS = @CPPFLAGS@ 
+
+RM = rm -f
+AR = @AR@
+ARFLAGS = @ARFLAGS@
+RANLIB = @RANLIB@
+
+INSTALL = @INSTALL@
+INSTALL_PROGRAM = @INSTALL_PROGRAM@
+INSTALL_MODE= -m 0755
+DOC_MODE= -m 0644
+
+# Include some boilerplate Gnu makefile definitions.
+prefix = @prefix@
+
+exec_prefix = @exec_prefix@
+bindir = @bindir@
+libdir = @libdir@
+infodir = @infodir@
+includedir = @includedir@
+datarootdir = @datarootdir@
+datadir = @datadir@
+docdir = $(datadir)/doc/poller
+localedir = $(datadir)/locale
+
+mandir = $(prefix)/man
+manpfx = man
+
+man1ext = .1
+man1dir = $(mandir)/$(manpfx)1
+man5ext = .5
+man5dir = $(mandir)/$(manpfx)5
+man8ext = .8
+man8dir = $(mandir)/$(manpfx)8
+
+htmldir = @htmldir@
+
+
+OBJS = CrawlTask.o Event.o Event_mgr.o Event_queue.o FileWriter.o NsIP.o ReverseDNS.o ZoneReader.o \
+       ps_config.o ps_logger.o ps_mutex.o ps_mutex_hdlr.o ps_queue.o ps_rw_mutex.o \
+       ps_task.o ps_thrd.o ps_thrd_pool.o
+
+
+.cc.o:
+	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $<
+
+
+all: $(PROG)
+
+$(PROG): $(OBJS) 
+	$(CXX) $(CXXFLAGS) $(DEFINES) $(CPPFLAGS) $(LDFLAGS) -o $@ $@.cc $(OBJS) $(LIBS)
+
+clean:
+	rm -f $(PROG) $(OBJS)  
